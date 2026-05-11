@@ -17,18 +17,6 @@ const PDF_SOURCE   = path.join(__dirname, 'i-765-unlocked.pdf');
 const TEMP_FDF     = path.join(__dirname, 'temp_filled.fdf');
 const TEMP_PDF     = path.join(__dirname, 'temp_output.pdf');
 
-// Python one-liner that replaces /V (...) for every named field in the FDF.
-// All dynamic data is passed via environment variables (D, I, O) to avoid
-// any shell-injection risk. Python uses double quotes throughout so the
-// shell command can be safely wrapped in single quotes.
-const PYTHON_ONELINER = [
-  'import re,json,os',
-  'd=json.loads(os.environ["D"])',
-  't=open(os.environ["I"],encoding="latin-1").read()',
-  '[t:=re.sub("(/T \\\\("+re.escape(k)+"\\\\)\\\\s*/V )\\\\([^)]*\\\\)",lambda m,v=v.replace("\\\\","\\\\\\\\").replace("(","\\\\(").replace(")","\\\\)"):m.group(1)+"("+v+")",t) for k,v in d.items() if v]',
-  'open(os.environ["O"],"w",encoding="latin-1").write(t)',
-].join(';');
-
 app.post('/fill-i765', (req, res) => {
   const fields = {
     'Line1a_FamilyName[0]':         req.body.familyName     || '',
@@ -45,10 +33,18 @@ app.post('/fill-i765', (req, res) => {
   };
 
   try {
-    // Step 1 — Python fills the FDF template and writes temp_filled.fdf
-    execSync(`python3 -c '${PYTHON_ONELINER}'`, {
-      env: { ...process.env, D: JSON.stringify(fields), I: FDF_TEMPLATE, O: TEMP_FDF },
-    });
+    // Step 1 — fill the FDF template in JS and write temp_filled.fdf
+    let fdf = fs.readFileSync(FDF_TEMPLATE, 'latin1');
+
+    for (const [key, value] of Object.entries(fields)) {
+      if (!value) continue;
+      const escapedKey   = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const escapedValue = value.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+      const pattern      = new RegExp(`(/T \\(${escapedKey}\\)\\s*/V )\\([^)]*\\)`);
+      fdf = fdf.replace(pattern, `$1(${escapedValue})`);
+    }
+
+    fs.writeFileSync(TEMP_FDF, fdf, 'latin1');
 
     // Step 2 — pdftk merges the filled FDF into the blank PDF
     execSync(`pdftk "${PDF_SOURCE}" fill_form "${TEMP_FDF}" output "${TEMP_PDF}"`);
