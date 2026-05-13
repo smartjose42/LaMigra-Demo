@@ -8,11 +8,11 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --navy: #0b1f3a;
-      --gold: #f4c542;
-      --white: #ffffff;
-      --white-70: rgba(255,255,255,0.7);
-      --white-20: rgba(255,255,255,0.12);
+      --navy: #FFFFFF;
+      --gold: #111111;
+      --white: #111111;
+      --white-70: rgba(17,17,17,0.7);
+      --white-20: rgba(17,17,17,0.12);
     }
 
     html { scroll-behavior: smooth; }
@@ -40,7 +40,7 @@
       top: -10%; left: 50%;
       transform: translateX(-50%);
       width: 800px; height: 800px;
-      background: radial-gradient(ellipse at center, rgba(244,197,66,0.07) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(17,17,17,0.07) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -49,137 +49,265 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 24px 48px;
+      padding: 28px 56px;
       position: relative;
-      z-index: 10;
+      z-index: 30;
     }
 
-    .logo {
-      font-size: 1.35rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      line-height: 1;
-      user-select: none;
-    }
-    .logo .la    { font-weight: 300; color: var(--white); }
-    .logo .migra { font-weight: 800; color: var(--gold); }
+    .logo { user-select: none; display: flex; align-items: center; }
 
     .nav-right {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
 
     .lang-switcher {
       display: flex;
       align-items: center;
       gap: 2px;
+      margin-right: 4px;
     }
 
     .lang-btn {
       background: transparent;
       border: none;
-      color: var(--white-70);
+      color: rgba(17,17,17,0.45);
       font-family: inherit;
       font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-weight: 500;
+      letter-spacing: 0.06em;
       cursor: pointer;
       padding: 5px 8px;
       border-radius: 4px;
       transition: color 0.18s;
     }
-    .lang-btn.active { color: var(--gold); }
-    .lang-btn:hover  { color: var(--white); }
+    .lang-btn.active { color: #111; font-weight: 600; }
+    .lang-btn:hover  { color: #111; }
 
     .lang-sep {
-      color: rgba(255,255,255,0.2);
+      color: rgba(17,17,17,0.2);
       font-size: 0.75rem;
     }
 
-    .nav-btn {
-      background: transparent;
-      border: 1.5px solid var(--gold);
-      color: var(--gold);
+    .signin-btn {
+      background: #111;
+      color: #fff;
+      border: none;
       font-family: inherit;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 9px 20px;
-      border-radius: 4px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      padding: 12px 28px;
+      border-radius: 999px;
       cursor: pointer;
-      transition: background 0.18s, color 0.18s;
+      transition: background 0.18s, transform 0.18s;
     }
-    .nav-btn:hover { background: var(--gold); color: var(--navy); }
+    .signin-btn:hover { background: #2a2a2a; }
+
+    .menu-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(17,17,17,0.15);
+      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.18s, background 0.18s;
+      padding: 0;
+    }
+    .menu-btn:hover { border-color: rgba(17,17,17,0.45); background: rgba(17,17,17,0.04); }
+    .menu-btn .bars {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 16px;
+    }
+    .menu-btn .bars span {
+      display: block;
+      height: 1.5px;
+      width: 100%;
+      background: #111;
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+    .menu-btn.open .bars span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+    .menu-btn.open .bars span:nth-child(2) { opacity: 0; }
+    .menu-btn.open .bars span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+    /* ── MENU PANEL ── */
+    .nav-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 56px;
+      width: 320px;
+      background: #fff;
+      border: 1px solid rgba(17,17,17,0.08);
+      border-radius: 18px;
+      box-shadow: 0 24px 48px -16px rgba(17,17,17,0.18), 0 4px 12px rgba(17,17,17,0.06);
+      padding: 12px;
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      z-index: 40;
+    }
+    .nav-menu.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+    .nav-menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      background: transparent;
+      border: none;
+      text-align: left;
+      font-family: inherit;
+      font-size: 1.02rem;
+      font-weight: 500;
+      color: #111;
+      padding: 14px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+      text-decoration: none;
+    }
+    .nav-menu-item:hover { background: rgba(17,17,17,0.05); }
+    .nav-menu-item .item-sub {
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: rgba(17,17,17,0.5);
+      display: block;
+      margin-top: 2px;
+    }
+    .nav-menu-item .item-arrow {
+      color: rgba(17,17,17,0.35);
+      flex-shrink: 0;
+      transition: transform 0.18s, color 0.18s;
+    }
+    .nav-menu-item:hover .item-arrow {
+      color: #111;
+      transform: translateX(2px);
+    }
+    .nav-menu-divider {
+      height: 1px;
+      background: rgba(17,17,17,0.08);
+      margin: 8px 4px;
+    }
 
     /* ── HERO BODY ── */
     .hero-body {
       flex: 1;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 40px 24px 80px;
+      justify-content: space-between;
+      padding: 60px 80px 120px;
       position: relative;
       z-index: 10;
-    }
-
-    .eyebrow {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 28px;
-      opacity: 0.9;
-    }
-
-    .headline {
-      font-size: clamp(2.4rem, 6vw, 5rem);
-      font-weight: 900;
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      max-width: 820px;
-      margin-bottom: 10px;
-    }
-    .headline em { font-style: normal; color: var(--gold); }
-    .headline .flipped {
-      display: block;
-      color: var(--white);
-      font-size: clamp(1.6rem, 3.6vw, 3.2rem);
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      margin-top: 14px;
-      opacity: 0.92;
-    }
-
-    .subheadline {
-      font-size: clamp(1.05rem, 2vw, 1.28rem);
-      font-weight: 400;
-      line-height: 1.6;
-      color: var(--white-70);
-      max-width: 620px;
-      margin: 32px auto 20px;
-    }
-    .subheadline strong { color: var(--white); font-weight: 600; }
-
-    .divider {
-      width: 40px; height: 2px;
-      background: var(--gold);
-      margin: 28px auto;
-      opacity: 0.6;
-    }
-
-    .mission {
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: var(--white-70);
-      max-width: 520px;
+      gap: 80px;
+      max-width: 1600px;
       margin: 0 auto;
+      width: 100%;
     }
+
+    .hero-left {
+      flex: 1 1 auto;
+      max-width: 720px;
+    }
+
+    .hero-fears {
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(17,17,17,0.55);
+      margin-bottom: 26px;
+    }
+
+    .hero-headline {
+      font-size: clamp(2.6rem, 5.4vw, 5.2rem);
+      font-weight: 500;
+      line-height: 1.02;
+      color: #111;
+      letter-spacing: -0.035em;
+      margin-bottom: 6px;
+    }
+
+    .hero-flipped {
+      font-size: clamp(2.6rem, 5.4vw, 5.2rem);
+      font-weight: 500;
+      line-height: 1.02;
+      color: rgba(17,17,17,0.32);
+      letter-spacing: -0.035em;
+    }
+
+    .hero-right {
+      flex: 0 0 auto;
+      max-width: 460px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 28px;
+      padding-top: 14px;
+    }
+
+    .hero-desc {
+      font-size: 1.18rem;
+      line-height: 1.45;
+      color: #111;
+      margin: 0;
+      font-weight: 400;
+      letter-spacing: -0.005em;
+    }
+
+    .hero-signup-btn {
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 16px 38px;
+      font-family: inherit;
+      font-size: 1.02rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .hero-signup-btn:hover { background: #2a2a2a; }
+
+    .hero-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 22px 28px;
+      margin-top: 4px;
+    }
+    .hero-feature {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: #111;
+    }
+    .hero-feature-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(17,17,17,0.08);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #111;
+    }
+    .hero-feature-check svg { width: 11px; height: 11px; }
 
     /* ── SCROLL CTA ── */
     .scroll-cta {
@@ -242,18 +370,10 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(244,197,66,0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(17,17,17,0.3), transparent);
     }
 
-    .id-logo {
-      font-size: 1.5rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 52px;
-      user-select: none;
-    }
-    .id-logo .la    { font-weight: 300; color: var(--white); }
-    .id-logo .migra { font-weight: 800; color: var(--gold); }
+    .id-logo { margin-bottom: 52px; user-select: none; }
 
     .id-headline {
       font-size: clamp(2rem, 4.5vw, 3.2rem);
@@ -281,8 +401,8 @@
 
     .id-card {
       flex: 1;
-      background: rgba(255,255,255,0.04);
-      border: 1.5px solid rgba(255,255,255,0.12);
+      background: rgba(17,17,17,0.04);
+      border: 1.5px solid rgba(17,17,17,0.12);
       border-radius: 18px;
       padding: 44px 32px 40px;
       cursor: pointer;
@@ -296,15 +416,15 @@
     }
     .id-card:hover {
       border-color: var(--gold);
-      background: rgba(244,197,66,0.04);
+      background: rgba(17,17,17,0.04);
       transform: translateY(-4px);
     }
 
     .id-card-icon {
       width: 70px; height: 70px;
       border-radius: 50%;
-      background: rgba(244,197,66,0.08);
-      border: 1.5px solid rgba(244,197,66,0.28);
+      background: rgba(17,17,17,0.08);
+      border: 1.5px solid rgba(17,17,17,0.28);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -331,6 +451,136 @@
       max-width: 240px;
     }
 
+    /* ── WHY LAMIGRA SECTION ── */
+    #why {
+      background: #f6f3ec;
+      padding: 120px 56px 140px;
+      position: relative;
+    }
+    .why-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .why-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: #111;
+      margin-bottom: 16px;
+      letter-spacing: -0.005em;
+    }
+    .why-eyebrow::before {
+      content: '';
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #111;
+      display: inline-block;
+    }
+    .why-headline {
+      font-size: clamp(2.2rem, 4.6vw, 4.4rem);
+      font-weight: 500;
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+      color: #111;
+      max-width: 1100px;
+      margin-bottom: 80px;
+    }
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    .why-card {
+      border-radius: 22px;
+      padding: 40px 44px 44px;
+      border: 1px solid rgba(17,17,17,0.08);
+      display: flex;
+      flex-direction: column;
+    }
+    .why-card.traditional {
+      background: transparent;
+    }
+    .why-card.lamigra {
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(17,17,17,0.04), 0 12px 32px -16px rgba(17,17,17,0.12);
+    }
+    .why-card-title {
+      font-size: 1.55rem;
+      font-weight: 500;
+      color: #111;
+      letter-spacing: -0.02em;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(17,17,17,0.1);
+      margin-bottom: 4px;
+    }
+    .why-row {
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(17,17,17,0.08);
+    }
+    .why-row:last-child {
+      border-bottom: none;
+      padding-bottom: 4px;
+    }
+    .why-row-label {
+      font-size: 0.95rem;
+      color: rgba(17,17,17,0.5);
+      margin-bottom: 8px;
+      font-weight: 400;
+      letter-spacing: -0.005em;
+    }
+    .why-row-value {
+      font-size: 1.18rem;
+      color: #111;
+      font-weight: 500;
+      letter-spacing: -0.012em;
+      line-height: 1.35;
+    }
+    @media (max-width: 900px) {
+      #why { padding: 80px 24px 100px; }
+      .why-grid { grid-template-columns: 1fr; gap: 18px; }
+      .why-card { padding: 32px 28px 36px; }
+      .why-headline { margin-bottom: 48px; }
+    }
+
+    .why-cta-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 72px;
+    }
+    .scroll-cta-inline {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      color: rgba(17,17,17,0.55);
+      transition: color 0.2s;
+    }
+    .scroll-cta-inline:hover { color: #111; }
+    .scroll-cta-inline .scroll-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .scroll-cta-inline .scroll-arrow {
+      width: 28px; height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    .scroll-cta-inline .scroll-arrow svg {
+      width: 22px; height: 22px;
+      stroke: currentColor; fill: none;
+      stroke-width: 2;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+
     /* ── SECTION 2: CHATBOT DEMO ── */
     #section2 {
       background: var(--navy);
@@ -342,7 +592,7 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(244,197,66,0.25), transparent);
+      background: linear-gradient(90deg, transparent, rgba(17,17,17,0.25), transparent);
     }
 
     .s2-inner {
@@ -371,8 +621,8 @@
 
     /* ── CHAT WINDOW ── */
     .chat-window {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(17,17,17,0.03);
+      border: 1px solid rgba(17,17,17,0.1);
       border-radius: 16px;
       padding: 28px 24px;
       min-height: 120px;
@@ -407,14 +657,14 @@
       margin-top: 2px;
     }
     .msg.user .msg-avatar {
-      background: rgba(244,197,66,0.15);
+      background: rgba(17,17,17,0.15);
       color: var(--gold);
-      border: 1.5px solid rgba(244,197,66,0.35);
+      border: 1.5px solid rgba(17,17,17,0.35);
     }
     .msg.ai .msg-avatar {
-      background: rgba(255,255,255,0.08);
+      background: rgba(17,17,17,0.08);
       color: var(--white);
-      border: 1.5px solid rgba(255,255,255,0.18);
+      border: 1.5px solid rgba(17,17,17,0.18);
     }
 
     .msg-bubble {
@@ -423,16 +673,16 @@
       border-radius: 14px;
       font-size: 0.91rem;
       line-height: 1.62;
-      color: rgba(255,255,255,0.9);
+      color: rgba(17,17,17,0.9);
     }
     .msg.user .msg-bubble {
-      background: rgba(244,197,66,0.1);
-      border: 1px solid rgba(244,197,66,0.22);
+      background: rgba(17,17,17,0.1);
+      border: 1px solid rgba(17,17,17,0.22);
       border-top-right-radius: 4px;
     }
     .msg.ai .msg-bubble {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.11);
+      background: rgba(17,17,17,0.06);
+      border: 1px solid rgba(17,17,17,0.11);
       border-top-left-radius: 4px;
     }
 
@@ -458,8 +708,8 @@
     }
 
     .typing-bubble {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.11);
+      background: rgba(17,17,17,0.06);
+      border: 1px solid rgba(17,17,17,0.11);
       border-radius: 14px;
       border-top-left-radius: 4px;
       padding: 14px 18px;
@@ -470,7 +720,7 @@
 
     .typing-dot {
       width: 7px; height: 7px;
-      background: rgba(255,255,255,0.35);
+      background: rgba(17,17,17,0.35);
       border-radius: 50%;
       animation: typingBounce 1.1s ease-in-out infinite;
     }
@@ -509,7 +759,7 @@
 
     /* ── I-765 FORM SECTION ── */
     #i765-section {
-      background: #071422;
+      background: #f6f3ec;
       padding: 100px 24px;
       position: relative;
     }
@@ -518,7 +768,7 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(244,197,66,0.2), transparent);
+      background: linear-gradient(90deg, transparent, rgba(17,17,17,0.2), transparent);
     }
 
     .form-inner { max-width: 580px; margin: 0 auto; }
@@ -552,8 +802,8 @@
     }
 
     .form-field input {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.13);
+      background: rgba(17,17,17,0.05);
+      border: 1px solid rgba(17,17,17,0.13);
       border-radius: 7px;
       padding: 11px 15px;
       font-family: inherit;
@@ -564,16 +814,16 @@
       width: 100%;
     }
     .form-field input:focus {
-      border-color: rgba(244,197,66,0.5);
-      background: rgba(255,255,255,0.07);
+      border-color: rgba(17,17,17,0.5);
+      background: rgba(17,17,17,0.07);
     }
 
     .category-badge {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: rgba(244,197,66,0.08);
-      border: 1px solid rgba(244,197,66,0.22);
+      background: rgba(17,17,17,0.08);
+      border: 1px solid rgba(17,17,17,0.22);
       border-radius: 7px;
       padding: 11px 15px;
       font-size: 0.93rem;
@@ -625,7 +875,7 @@
 
     .toast {
       font-size: 0.83rem;
-      color: rgba(244,197,66,0.85);
+      color: rgba(17,17,17,0.85);
       opacity: 0;
       transition: opacity 0.4s;
     }
@@ -642,7 +892,7 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(244,197,66,0.25), transparent);
+      background: linear-gradient(90deg, transparent, rgba(17,17,17,0.25), transparent);
     }
 
     .s3-inner { max-width: 720px; margin: 0 auto; text-align: center; }
@@ -669,9 +919,9 @@
     }
 
     .lawyer-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-top: 2px solid rgba(244,197,66,0.4);
+      background: rgba(17,17,17,0.04);
+      border: 1px solid rgba(17,17,17,0.1);
+      border-top: 2px solid rgba(17,17,17,0.4);
       border-radius: 14px;
       padding: 28px 28px 24px;
       display: flex;
@@ -682,8 +932,8 @@
     .lawyer-photo {
       width: 78px; height: 78px;
       border-radius: 50%;
-      background: linear-gradient(145deg, rgba(244,197,66,0.18), rgba(244,197,66,0.04));
-      border: 2px solid rgba(244,197,66,0.3);
+      background: linear-gradient(145deg, rgba(17,17,17,0.18), rgba(17,17,17,0.04));
+      border: 2px solid rgba(17,17,17,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -770,7 +1020,7 @@
 
     /* ── SECTION 4: ATTORNEY EARLY ACCESS ── */
     #section4 {
-      background: #f8f9fa;
+      background: #f6f3ec;
       padding: 100px 24px 100px;
       position: relative;
     }
@@ -779,16 +1029,16 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 1px;
-      background: rgba(11,31,58,0.1);
+      background: rgba(17,17,17,0.1);
     }
 
     .s4-inner { max-width: 500px; margin: 0 auto; text-align: center; }
 
     .attorney-tag {
       display: inline-block;
-      background: rgba(244,197,66,0.18);
-      border: 1px solid rgba(244,197,66,0.45);
-      color: #7a5900;
+      background: rgba(17,17,17,0.18);
+      border: 1px solid rgba(17,17,17,0.45);
+      color: #111111;
       font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 0.18em;
@@ -801,7 +1051,7 @@
     .s4-headline {
       font-size: clamp(1.65rem, 3.6vw, 2.5rem);
       font-weight: 900;
-      color: var(--navy);
+      color: var(--white);
       line-height: 1.14;
       letter-spacing: -0.02em;
       margin-bottom: 16px;
@@ -810,7 +1060,7 @@
     .s4-sub {
       font-size: 0.97rem;
       line-height: 1.68;
-      color: rgba(11,31,58,0.6);
+      color: rgba(17,17,17,0.6);
       max-width: 420px;
       margin: 0 auto 42px;
     }
@@ -824,25 +1074,25 @@
       font-weight: 700;
       letter-spacing: 0.13em;
       text-transform: uppercase;
-      color: rgba(11,31,58,0.5);
+      color: rgba(17,17,17,0.5);
     }
 
     .s4-field input {
       background: #ffffff;
-      border: 1.5px solid rgba(11,31,58,0.13);
+      border: 1.5px solid rgba(17,17,17,0.13);
       border-radius: 8px;
       padding: 11px 14px;
       font-family: inherit;
       font-size: 0.94rem;
-      color: var(--navy);
+      color: var(--white);
       outline: none;
       width: 100%;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .s4-field input::placeholder { color: rgba(11,31,58,0.28); }
+    .s4-field input::placeholder { color: rgba(17,17,17,0.28); }
     .s4-field input:focus {
-      border-color: rgba(244,197,66,0.7);
-      box-shadow: 0 0 0 3px rgba(244,197,66,0.12);
+      border-color: rgba(17,17,17,0.7);
+      box-shadow: 0 0 0 3px rgba(17,17,17,0.12);
     }
 
     .s4-submit {
@@ -881,110 +1131,32 @@
     .success-check {
       width: 58px; height: 58px;
       border-radius: 50%;
-      background: rgba(244,197,66,0.12);
-      border: 2px solid rgba(244,197,66,0.45);
+      background: rgba(17,17,17,0.12);
+      border: 2px solid rgba(17,17,17,0.45);
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .success-check svg {
       width: 26px; height: 26px;
-      stroke: #a07000; fill: none;
+      stroke: #111111; fill: none;
       stroke-width: 2.5;
       stroke-linecap: round; stroke-linejoin: round;
     }
 
-    .success-text { font-size: 1.05rem; font-weight: 700; color: var(--navy); }
+    .success-text { font-size: 1.05rem; font-weight: 700; color: var(--white); }
 
-    /* ── DISCLAIMER MODAL ── */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: rgba(0,0,0,0.82);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .modal-overlay.hidden { display: none; }
-
-    .modal-box {
-      background: #0d2240;
-      border: 1px solid rgba(244,197,66,0.35);
-      border-radius: 16px;
-      padding: 44px 40px 36px;
-      max-width: 480px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
-    }
-
-    .modal-logo {
-      font-size: 1.5rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 28px;
-      user-select: none;
-    }
-    .modal-logo .la    { font-weight: 300; color: var(--white); }
-    .modal-logo .migra { font-weight: 800; color: var(--gold); }
-
-    .modal-heading {
-      font-size: 1.45rem;
-      font-weight: 900;
-      color: var(--white);
-      letter-spacing: -0.01em;
-      margin-bottom: 16px;
-    }
-
-    .modal-divider { width: 36px; height: 2px; background: var(--gold); margin: 0 auto 22px; opacity: 0.55; }
-
-    .modal-body {
-      font-size: 0.91rem;
-      line-height: 1.7;
-      color: var(--white-70);
-      margin-bottom: 32px;
-    }
-    .modal-body strong { color: var(--white); font-weight: 600; }
-
-    .modal-continue-btn {
-      background: var(--gold);
-      color: var(--navy);
-      font-family: inherit;
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      padding: 15px 32px;
-      border: none;
-      border-radius: 7px;
-      cursor: pointer;
-      width: 100%;
-      transition: opacity 0.2s, transform 0.15s;
-      margin-bottom: 18px;
-    }
-    .modal-continue-btn:hover { opacity: 0.88; transform: translateY(-1px); }
-
-    .modal-lawyer-link {
-      background: none;
-      border: none;
-      color: var(--white-70);
-      font-family: inherit;
-      font-size: 0.84rem;
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      padding: 0;
-      transition: color 0.18s;
-    }
-    .modal-lawyer-link:hover { color: var(--gold); }
+    .s4-logo    { margin-bottom: 28px; user-select: none; display: flex; justify-content: center; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       nav { padding: 20px 24px; }
       .nav-right { gap: 10px; }
-      .hero-body { padding: 32px 20px 100px; }
+      .signin-btn { padding: 10px 20px; font-size: 0.88rem; }
+      .menu-btn { width: 40px; height: 40px; }
+      .nav-menu { right: 24px; left: 24px; width: auto; }
+      .hero-body { padding: 32px 24px 100px; flex-direction: column; align-items: flex-start; gap: 32px; }
+      .hero-right { max-width: 100%; }
       .s2-inner, .form-inner, .s3-inner, .s4-inner { max-width: 100%; }
       .msg-bubble { max-width: 88%; }
       #section2, #i765-section, #section3, #section4 { padding: 72px 20px 60px; }
@@ -993,75 +1165,79 @@
       .lawyer-meta-row { justify-content: center; }
       .id-cards { flex-direction: column; }
       #identifier { padding: 48px 20px; }
-      .modal-box { padding: 36px 24px 28px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ── DISCLAIMER MODAL ── -->
-  <div class="modal-overlay" id="modal-overlay">
-    <div class="modal-box">
-      <div class="modal-logo"><span class="la">La</span><span class="migra">Migra</span></div>
-      <h2 class="modal-heading" data-i18n="modalHeading">Before You Begin</h2>
-      <div class="modal-divider"></div>
-      <p class="modal-body" data-i18n-html="modalBody">
-        <strong>LaMigra is a document preparation service, not a law firm.</strong>
-        We help you complete and organize immigration forms, but we do not provide
-        legal advice and we are not a substitute for a licensed attorney.
-        <br /><br />
-        If your situation involves a court hearing, criminal history, or deportation
-        proceedings, you should consult a licensed immigration attorney before proceeding.
-      </p>
-      <button class="modal-continue-btn" onclick="acceptDisclaimer()" data-i18n="modalContinue">
-        I Understand — Continue
-      </button>
-      <br />
-      <button class="modal-lawyer-link" onclick="needLawyer()" data-i18n="modalLawyerLink">
-        I need a lawyer instead
-      </button>
-    </div>
-  </div>
 
   <!-- ── HERO ── -->
   <section id="hero">
     <nav>
-      <div class="logo"><span class="la">La</span><span class="migra">Migra</span></div>
+      <div class="logo">
+        <img src="LaMigra.svg" alt="LaMigra" style="height:36px;width:auto;display:block;" />
+      </div>
       <div class="nav-right">
         <div class="lang-switcher">
           <button class="lang-btn active" id="lang-en" onclick="setLang('en')">EN</button>
           <span class="lang-sep">|</span>
           <button class="lang-btn" id="lang-es" onclick="setLang('es')">ES</button>
         </div>
-        <button class="nav-btn" data-i18n="navBtn"
-          onclick="document.getElementById('section4').scrollIntoView({behavior:'smooth'})">
-          For Attorneys
+        <button class="signin-btn" data-i18n="signInBtn" onclick="openSignIn()">Sign in</button>
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu()">
+          <span class="bars"><span></span><span></span><span></span></span>
         </button>
+      </div>
+      <div class="nav-menu" id="navMenu" role="menu">
+        <a class="nav-menu-item" href="#section2" role="menuitem" onclick="closeMenu()">
+          <span>
+            <span data-i18n="menu1Title">How it works</span>
+            <span class="item-sub" data-i18n="menu1Sub">Find your visa pathway in minutes</span>
+          </span>
+          <svg class="item-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="nav-menu-item" href="#i765-section" role="menuitem" onclick="closeMenu()">
+          <span>
+            <span data-i18n="menu2Title">AI Assistant</span>
+            <span class="item-sub" data-i18n="menu2Sub">Chat, fill, file — guided end to end</span>
+          </span>
+          <svg class="item-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="nav-menu-item" href="#section3" role="menuitem" onclick="closeMenu()">
+          <span>
+            <span data-i18n="menu3Title">Find an Attorney</span>
+            <span class="item-sub" data-i18n="menu3Sub">Vetted lawyers for complex cases</span>
+          </span>
+          <svg class="item-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
       </div>
     </nav>
 
     <div class="hero-body">
-      <p class="eyebrow" data-i18n="heroEyebrow">AI-powered immigration guidance</p>
-      <h1 class="headline" data-i18n-html="heroHeadline">
-        Everyone fears <em style="white-space:nowrap">La Migra.</em>
-        <span class="flipped">We flipped the script.</span>
-      </h1>
-      <p class="subheadline" data-i18n-html="heroSub">
-        LaMigra is the <strong>AI platform that turns the most stressful part
-        of the immigrant journey</strong> into something you can actually
-        handle — in minutes, not months.
-      </p>
-      <div class="divider"></div>
-      <p class="mission" data-i18n="heroMission">
-        We believe immigration guidance shouldn't be a luxury. LaMigra makes
-        expert-level support affordable and accessible to every immigrant —
-        regardless of income, language, or legal knowledge.
-      </p>
+      <div class="hero-left">
+        <p class="hero-fears" data-i18n="heroFears">Everyone fears</p>
+        <h1 class="hero-headline" data-i18n="heroHeadline">La Migra.</h1>
+        <p class="hero-flipped" data-i18n="heroFlipped">We flipped the script.</p>
+      </div>
+      <div class="hero-right">
+        <p class="hero-desc" data-i18n="heroDesc">LaMigra is the AI platform that turns the most stressful part of the immigrant journey into something you can actually handle — in minutes, not months.</p>
+        <button class="hero-signup-btn" onclick="document.getElementById('i765-section').scrollIntoView({behavior:'smooth'})" data-i18n="heroSignup">Sign up</button>
+        <div class="hero-features">
+          <span class="hero-feature">
+            <span class="hero-feature-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span data-i18n="feat1">Minutes, not months</span>
+          </span>
+          <span class="hero-feature">
+            <span class="hero-feature-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span data-i18n="feat2">Bilingual, end to end</span>
+          </span>
+        </div>
+      </div>
     </div>
 
-    <a class="scroll-cta" href="#identifier"
-      onclick="document.getElementById('identifier').scrollIntoView({behavior:'smooth'});return false;">
-      <span class="scroll-label" data-i18n="scrollLabel">See how it works</span>
+    <a class="scroll-cta" href="#why"
+      onclick="document.getElementById('why').scrollIntoView({behavior:'smooth'});return false;">
+      <span class="scroll-label" data-i18n="scrollLabel">Why us</span>
       <span class="scroll-arrow">
         <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" /></svg>
       </span>
@@ -1069,36 +1245,62 @@
   </section>
 
 
-  <!-- ── IDENTIFIER SECTION ── -->
-  <section id="identifier">
-    <div class="id-logo"><span class="la">La</span><span class="migra">Migra</span></div>
+  <!-- ── WHY LAMIGRA ── -->
+  <section id="why">
+    <div class="why-inner">
+      <div class="why-eyebrow" data-i18n="whyEyebrow">Why LaMigra</div>
+      <h2 class="why-headline" data-i18n="whyHeadline">Immigration that finally feels human.</h2>
 
-    <h2 class="id-headline" data-i18n="idHeadline">Who are you here for?</h2>
-    <p class="id-sub" data-i18n="idSub">Tell us who you are so we can guide you to the right place.</p>
-
-    <div class="id-cards">
-      <div class="id-card"
-        onclick="document.getElementById('section2').scrollIntoView({behavior:'smooth'})">
-        <div class="id-card-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
+      <div class="why-grid">
+        <div class="why-card traditional">
+          <div class="why-card-title" data-i18n="whyTradTitle">Traditional Immigration Services</div>
+          <div class="why-row">
+            <div class="why-row-label" data-i18n="whyCostLabel">Cost</div>
+            <div class="why-row-value" data-i18n="whyTradCost">$3,000–$10,000 in attorney fees</div>
+          </div>
+          <div class="why-row">
+            <div class="why-row-label" data-i18n="whySpeedLabel">Speed</div>
+            <div class="why-row-value" data-i18n="whyTradSpeed">Weeks of waiting and follow-ups</div>
+          </div>
+          <div class="why-row">
+            <div class="why-row-label" data-i18n="whyLangLabel">Language</div>
+            <div class="why-row-value" data-i18n="whyTradLang">English-only paperwork and instructions</div>
+          </div>
+          <div class="why-row">
+            <div class="why-row-label" data-i18n="whyGuideLabel">Guidance</div>
+            <div class="why-row-value" data-i18n="whyTradGuide">Confusing PDFs, high risk of rejection</div>
+          </div>
         </div>
-        <div class="id-card-title" data-i18n="idCard1Title">I need immigration help</div>
-        <div class="id-card-sub" data-i18n="idCard1Sub">Get guidance on your case and have your forms prepared automatically.</div>
+
+        <div class="why-card lamigra">
+          <div class="why-card-title" data-i18n="whyLamTitle">LaMigra</div>
+          <div class="why-row">
+            <div class="why-row-label" data-i18n="whyCostLabel2">Cost</div>
+            <div class="why-row-value" data-i18n="whyLamCost">Flat fee, $99 for most cases</div>
+          </div>
+          <div class="why-row">
+            <div class="why-row-label" data-i18n="whySpeedLabel2">Speed</div>
+            <div class="why-row-value" data-i18n="whyLamSpeed">Forms ready in minutes, not weeks</div>
+          </div>
+          <div class="why-row">
+            <div class="why-row-label" data-i18n="whyLangLabel2">Language</div>
+            <div class="why-row-value" data-i18n="whyLamLang">Fully bilingual — Spanish and English, end to end</div>
+          </div>
+          <div class="why-row">
+            <div class="why-row-label" data-i18n="whyGuideLabel2">Guidance</div>
+            <div class="why-row-value" data-i18n="whyLamGuide">AI-guided, auto-filled, USCIS-ready forms</div>
+          </div>
+        </div>
       </div>
 
-      <div class="id-card"
-        onclick="document.getElementById('section4').scrollIntoView({behavior:'smooth'})">
-        <div class="id-card-icon">
-          <svg viewBox="0 0 24 24">
-            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-          </svg>
-        </div>
-        <div class="id-card-title" data-i18n="idCard2Title">I am an immigration attorney</div>
-        <div class="id-card-sub" data-i18n="idCard2Sub">Join our network and get pre-qualified clients sent directly to you.</div>
+      <div class="why-cta-wrap">
+        <a class="scroll-cta-inline" href="#section2"
+          onclick="document.getElementById('section2').scrollIntoView({behavior:'smooth'});return false;">
+          <span class="scroll-label" data-i18n="scrollLabel2">See how it works</span>
+          <span class="scroll-arrow">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" /></svg>
+          </span>
+        </a>
       </div>
     </div>
   </section>
@@ -1198,61 +1400,49 @@
   </section>
 
 
-  <!-- ── SECTION 4: ATTORNEY EARLY ACCESS ── -->
-  <section id="section4">
-    <div class="s4-inner">
-      <span class="attorney-tag" data-i18n="s4Tag">For Attorneys</span>
-      <h2 class="s4-headline" data-i18n="s4Headline">Are you an immigration attorney looking to grow your practice?</h2>
-      <p class="s4-sub" data-i18n="s4Sub">
-        We are building a network of vetted immigration attorneys. Join our early access program
-        and be first in line when clients start arriving.
-      </p>
-
-      <form class="attorney-form" id="attorney-form" onsubmit="handleAttorneySubmit(event)">
-        <div class="s4-field">
-          <label for="atty-name" data-i18n="labelAttyName">Full Name</label>
-          <input type="text" id="atty-name" placeholder="Jane Smith" required />
-        </div>
-        <div class="s4-field">
-          <label for="atty-email" data-i18n="labelAttyEmail">Email Address</label>
-          <input type="email" id="atty-email" placeholder="jane@smithlaw.com" required />
-        </div>
-        <div class="s4-field">
-          <label for="atty-bar" data-i18n="labelAttyBar">Bar Number</label>
-          <input type="text" id="atty-bar" placeholder="e.g. 123456" required />
-        </div>
-        <div class="s4-field">
-          <label for="atty-state" data-i18n="labelAttyState">State Licensed In</label>
-          <input type="text" id="atty-state" placeholder="e.g. California" required />
-        </div>
-        <button type="submit" class="s4-submit" data-i18n="s4Submit">Apply for Early Access</button>
-      </form>
-
-      <div class="s4-success" id="s4-success">
-        <div class="success-check">
-          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
-        </div>
-        <p class="success-text" data-i18n="s4SuccessText">We will be in touch within 2 business days.</p>
-      </div>
-    </div>
-  </section>
-
-
   <script>
     // ── TRANSLATIONS ─────────────────────────────────────────────────────────
 
     const LANG = {
       en: {
         navBtn: 'For Attorneys',
+        signInBtn: 'Sign in',
+        menu1Title: 'How it works',
+        menu1Sub: 'Find your visa pathway in minutes',
+        menu2Title: 'AI Assistant',
+        menu2Sub: 'Chat, fill, file — guided end to end',
+        menu3Title: 'Find an Attorney',
+        menu3Sub: 'Vetted lawyers for complex cases',
         modalHeading: 'Before You Begin',
         modalBody: '<strong>LaMigra is a document preparation service, not a law firm.</strong> We help you complete and organize immigration forms, but we do not provide legal advice and we are not a substitute for a licensed attorney.<br /><br />If your situation involves a court hearing, criminal history, or deportation proceedings, you should consult a licensed immigration attorney before proceeding.',
         modalContinue: 'I Understand — Continue',
         modalLawyerLink: 'I need a lawyer instead',
-        heroEyebrow: 'AI-powered immigration guidance',
-        heroHeadline: 'Everyone fears <em style="white-space:nowrap">La Migra.</em><span class="flipped">We flipped the script.</span>',
-        heroSub: 'LaMigra is the <strong>AI platform that turns the most stressful part of the immigrant journey</strong> into something you can actually handle — in minutes, not months.',
-        heroMission: "We believe immigration guidance shouldn't be a luxury. LaMigra makes expert-level support affordable and accessible to every immigrant — regardless of income, language, or legal knowledge.",
-        scrollLabel: 'See how it works',
+        heroFears: 'Everyone fears',
+        heroHeadline: 'La Migra.',
+        heroFlipped: 'We flipped the script.',
+        heroDesc: 'LaMigra is the AI platform that turns the most stressful part of the immigrant journey into something you can actually handle — in minutes, not months.',
+        heroSignup: 'Sign up',
+        feat1: 'Minutes, not months',
+        feat2: 'Bilingual, end to end',
+        feat3: 'Real attorneys on call',
+        whyEyebrow: 'Why LaMigra',
+        whyHeadline: 'Immigration that finally feels human.',
+        whyTradTitle: 'Traditional Immigration Services',
+        whyLamTitle: 'LaMigra',
+        whyCostLabel: 'Cost', whyCostLabel2: 'Cost',
+        whySpeedLabel: 'Speed', whySpeedLabel2: 'Speed',
+        whyLangLabel: 'Language', whyLangLabel2: 'Language',
+        whyGuideLabel: 'Guidance', whyGuideLabel2: 'Guidance',
+        whyTradCost: '$3,000–$10,000 in attorney fees',
+        whyTradSpeed: 'Weeks of waiting and follow-ups',
+        whyTradLang: 'English-only paperwork and instructions',
+        whyTradGuide: 'Confusing PDFs, high risk of rejection',
+        whyLamCost: 'Flat fee, $99 for most cases',
+        whyLamSpeed: 'Forms ready in minutes, not weeks',
+        whyLamLang: 'Fully bilingual — Spanish and English, end to end',
+        whyLamGuide: 'AI-guided, auto-filled, USCIS-ready forms',
+        scrollLabel: 'Why us',
+        scrollLabel2: 'See how it works',
         idHeadline: 'Who are you here for?',
         idSub: 'Tell us who you are so we can guide you to the right place.',
         idCard1Title: 'I need immigration help',
@@ -1295,15 +1485,43 @@
       },
       es: {
         navBtn: 'Para Abogados',
+        signInBtn: 'Iniciar sesión',
+        menu1Title: 'Cómo funciona',
+        menu1Sub: 'Encuentra tu camino migratorio en minutos',
+        menu2Title: 'Asistente IA',
+        menu2Sub: 'Chatea, completa y envía — guiado de principio a fin',
+        menu3Title: 'Buscar un abogado',
+        menu3Sub: 'Abogados verificados para casos complejos',
         modalHeading: 'Antes de Comenzar',
         modalBody: '<strong>LaMigra es un servicio de preparación de documentos, no un bufete de abogados.</strong> Te ayudamos a completar y organizar formularios de inmigración, pero no proporcionamos asesoría legal ni somos un sustituto de un abogado licenciado.<br /><br />Si tu situación involucra una audiencia judicial, antecedentes penales o procedimientos de deportación, debes consultar a un abogado de inmigración licenciado antes de continuar.',
         modalContinue: 'Entiendo — Continuar',
         modalLawyerLink: 'Necesito un abogado',
-        heroEyebrow: 'Orientación migratoria impulsada por IA',
-        heroHeadline: 'Todos le temen a <em style="white-space:nowrap">La Migra.</em><span class="flipped">Nosotros cambiamos el juego.</span>',
-        heroSub: 'LaMigra es la <strong>plataforma de IA que convierte la parte más estresante del proceso migratorio</strong> en algo que puedes manejar — en minutos, no en meses.',
-        heroMission: 'Creemos que la orientación migratoria no debería ser un lujo. LaMigra hace que el apoyo experto sea accesible para todos los inmigrantes — sin importar ingresos, idioma o conocimientos legales.',
-        scrollLabel: 'Cómo funciona',
+        heroFears: 'Todos le temen a',
+        heroHeadline: 'La Migra.',
+        heroFlipped: 'Nosotros cambiamos el juego.',
+        heroDesc: 'LaMigra es la plataforma de IA que convierte la parte más estresante del proceso migratorio en algo que puedes manejar — en minutos, no en meses.',
+        heroSignup: 'Regístrate',
+        feat1: 'Minutos, no meses',
+        feat2: 'Bilingüe, de principio a fin',
+        feat3: 'Abogados reales disponibles',
+        whyEyebrow: 'Por qué LaMigra',
+        whyHeadline: 'Una inmigración que por fin se siente humana.',
+        whyTradTitle: 'Servicios de inmigración tradicionales',
+        whyLamTitle: 'LaMigra',
+        whyCostLabel: 'Costo', whyCostLabel2: 'Costo',
+        whySpeedLabel: 'Velocidad', whySpeedLabel2: 'Velocidad',
+        whyLangLabel: 'Idioma', whyLangLabel2: 'Idioma',
+        whyGuideLabel: 'Asesoría', whyGuideLabel2: 'Asesoría',
+        whyTradCost: '$3,000–$10,000 en honorarios de abogado',
+        whyTradSpeed: 'Semanas de espera y seguimientos',
+        whyTradLang: 'Trámites e instrucciones solo en inglés',
+        whyTradGuide: 'PDFs confusos, alto riesgo de rechazo',
+        whyLamCost: 'Tarifa fija, $99 para la mayoría de los casos',
+        whyLamSpeed: 'Formularios listos en minutos, no en semanas',
+        whyLamLang: 'Totalmente bilingüe — español e inglés, de principio a fin',
+        whyLamGuide: 'Formularios guiados por IA, autocompletados y listos para USCIS',
+        scrollLabel: 'Por qué nosotros',
+        scrollLabel2: 'Cómo funciona',
         idHeadline: '¿Para quién estás aquí?',
         idSub: 'Dinos quién eres para que podamos guiarte al lugar correcto.',
         idCard1Title: 'Necesito ayuda migratoria',
@@ -1348,6 +1566,35 @@
 
     let currentLang = 'en';
 
+    // ── NAV MENU ─────────────────────────────────────────────────────────────
+    function toggleMenu() {
+      const btn  = document.getElementById('menuBtn');
+      const menu = document.getElementById('navMenu');
+      const isOpen = menu.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+    function closeMenu() {
+      document.getElementById('menuBtn').classList.remove('open');
+      document.getElementById('menuBtn').setAttribute('aria-expanded', 'false');
+      document.getElementById('navMenu').classList.remove('open');
+    }
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('navMenu');
+      const btn  = document.getElementById('menuBtn');
+      if (!menu || !btn) return;
+      if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+        closeMenu();
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
+    });
+
+    function openSignIn() {
+      alert('Sign in — coming soon.');
+    }
+
     function setLang(lang) {
       currentLang = lang;
       const t = LANG[lang];
@@ -1364,27 +1611,6 @@
         const key = el.getAttribute('data-i18n-html');
         if (t[key] !== undefined) el.innerHTML = t[key];
       });
-    }
-
-    // ── DISCLAIMER MODAL ─────────────────────────────────────────────────────
-    (function () {
-      const overlay = document.getElementById('modal-overlay');
-      if (sessionStorage.getItem('lamigra-disclaimer-accepted')) {
-        overlay.classList.add('hidden');
-      } else {
-        document.body.style.overflow = 'hidden';
-      }
-    })();
-
-    function acceptDisclaimer() {
-      sessionStorage.setItem('lamigra-disclaimer-accepted', '1');
-      document.getElementById('modal-overlay').classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-
-    function needLawyer() {
-      acceptDisclaimer();
-      document.getElementById('section4').scrollIntoView({ behavior: 'smooth' });
     }
 
     // ── CHAT HELPERS ─────────────────────────────────────────────────────────
